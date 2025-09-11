@@ -33,6 +33,9 @@ const MobileSingle = () => {
         </div>
         <div className="md:w-1/2 flex flex-col justify-center text-gray-900">
           <h1 className="text-4xl font-extrabold mb-4">{product.name}</h1>
+          <h2 className="text-3xl font-extrabold mb-3">{product.brand}</h2>
+          <h3 className="text-xl font-semibold mb-2">{product.model}</h3>
+          <p className="text-blue-600 font-bold text-2xl mb-6">${product.price}</p>
           <p className="text-gray-700 text-base leading-relaxed mb-6">{product.description}</p>
           <button
             onClick={() => addToCart(product)}
