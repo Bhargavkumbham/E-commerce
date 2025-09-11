@@ -26,8 +26,8 @@ const AcSingle = () => {
       <div className="max-w-4xl mx-auto px-4 py-8 bg-white rounded-xl shadow-lg flex flex-col md:flex-row gap-8">
         <div className="md:w-1/2 flex justify-center items-center">
           <img
-            src={product.image.startsWith('http') ? product.image : `/${product.image}`}
-            alt={`${product.company} ${product.model}`}
+            src={product.image}
+            alt={`${product.brand} ${product.model}`}
             className="max-w-full max-h-96 object-contain rounded-md"
           />
         </div>
