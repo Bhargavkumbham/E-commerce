@@ -1,30 +1,78 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 
 const Navbar = () => {
   const { cartItems } = useCart();
+  const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
+
+  const productPages = {
+    mobiles: "/mobiles",
+    computers: "/computers",
+    books: "/books",
+    fridges: "/fridges",
+    ac: "/ac"
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    const query = searchTerm.trim().toLowerCase();
+
+    if (query) {
+      if (productPages[query]) {
+        navigate(productPages[query]);
+      } else {
+        navigate(`/search?q=${encodeURIComponent(query)}`);
+      }
+    }
+  };
 
   return (
     <>
       <nav className="w-full bg-white shadow-md rounded-md mt-10">
         <div className="max-w-screen-lg mx-auto flex flex-wrap items-center justify-between px-4 py-3">
-          <Link to="/" className="flex items-center text-gray-900 text-2xl font-bold tracking-tight">
+          <Link
+            to="/"
+            className="flex items-center text-gray-900 text-2xl font-bold tracking-tight"
+          >
             E-Mart
           </Link>
 
-          <div className="hidden md:flex items-center flex-1 justify-center mx-4">
+          <form
+            onSubmit={handleSearchSubmit}
+            className="hidden md:flex items-center flex-1 justify-center mx-4"
+          >
             <input
               type="text"
               placeholder="Search..."
-              className="w-64 px-3 py-2 border border-gray-300 bg-white text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+              value={searchTerm}
+              onChange={handleSearchChange}
+              className="w-64 px-3 py-2 border border-gray-300 bg-white text-gray-900 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
-          </div>
+            <button
+              type="submit"
+              className="px-4 py-2 bg-blue-500 text-white rounded-r-md hover:bg-blue-600 transition"
+            >
+              Search
+            </button>
+          </form>
+
           <div className="flex items-center gap-6">
-            <Link to="/login" className="text-blue-600 font-medium hover:underline hover:text-blue-700 transition">
+            <Link
+              to="/login"
+              className="text-blue-600 font-medium hover:underline hover:text-blue-700 transition"
+            >
               Login/SignUp
             </Link>
-            <Link to="/cart" className="relative flex items-center gap-2 text-gray-900 hover:text-blue-600 transition">
+            <Link
+              to="/cart"
+              className="relative flex items-center gap-2 text-gray-900 hover:text-blue-600 transition"
+            >
               <span>Cart</span>
               <span className="bg-blue-500 text-white rounded-full px-2 text-xs font-bold">
                 {cartItems.length}

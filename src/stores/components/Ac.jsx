@@ -7,7 +7,7 @@ const Ac = () => {
   return (
     <>
       <div className="mb-8 text-center">
-        <h2 className="text-3xl font-bold text-slate-800 tracking-tight">AC</h2>
+        <h2 className="text-3xl font-bold text-slate-800 tracking-tight">Air Conditioner</h2>
       </div>
       <div className="flex flex-wrap justify-center gap-6 px-4 md:px-0">
         {firstFiveImages.map((item, idx) => (
