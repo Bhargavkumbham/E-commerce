@@ -24,7 +24,7 @@ const AcSingle = () => {
     <>
       <Navbar />
       <div className="max-w-4xl mx-auto px-4 py-8 bg-white rounded-xl shadow-lg flex flex-col md:flex-row gap-8">
-        <div className="md:w-1/2 flex justify-center items-center">
+        <div className="md:w-1/2 flex justify-center items-center bg-white rounded-md p-4">
           <img
             src={product.image}
             alt={`${product.brand} ${product.model}`}
@@ -32,13 +32,13 @@ const AcSingle = () => {
           />
         </div>
         <div className="md:w-1/2 flex flex-col justify-center text-gray-900">
-          <h2 className="text-3xl font-extrabold mb-3">{product.company}</h2>
-          <h3 className="text-xl font-semibold mb-2">{product.model}</h3>
-          <p className="text-blue-600 font-bold text-2xl mb-6">${product.price}</p>
+          <h2 className="text-3xl font-extrabold mb-3 text-black">{product.company}</h2>
+          <h3 className="text-xl font-semibold mb-2 text-gray-800">{product.model}</h3>
+          <p className="font-bold text-2xl mb-6 text-gray-900">${product.price}</p>
           <p className="text-gray-700 mb-6">{product.description}</p>
           <button
             onClick={() => addToCart(product)}
-            className="w-fit bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg shadow-md transition-colors duration-300"
+            className="w-fit bg-gray-800 hover:bg-gray-900 text-white font-semibold px-6 py-3 rounded-lg shadow-md transition-colors duration-300"
           >
             Add to Cart
           </button>

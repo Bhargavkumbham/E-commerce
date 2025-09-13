@@ -2,7 +2,7 @@ import React from 'react';
 import { booksData } from '../data/books';
 
 const Books = () => {
-  const firstTwelveImages = booksData.slice(2, 10);
+  const firstTwelveImages = booksData.slice(0, 7);
 
   return (
     <>

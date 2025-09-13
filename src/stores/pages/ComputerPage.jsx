@@ -3,8 +3,15 @@ import { computerData } from '../data/computers';
 import Navbar from '../components/Navbar';
 import { Link } from 'react-router-dom';
 
+const sortOptions = [
+  { value: 'priceLowHigh', label: 'Price: Low to High' },
+  { value: 'priceHighLow', label: 'Price: High to Low' },
+  { value: 'dateModified', label: 'Date Modified' },
+];
+
 const ComputerPage = () => {
   const [selectedProduct, setSelectedProduct] = useState([]);
+  const [sortType, setSortType] = useState('priceLowHigh');
   const uniqueCompanies = [...new Set(computerData.map(item => item.company))];
 
   const companyHandler = (product) => {
@@ -15,15 +22,43 @@ const ComputerPage = () => {
     }
   };
 
+  const sortedComputers = [...computerData].sort((a, b) => {
+    switch (sortType) {
+      case 'priceLowHigh':
+        return a.price - b.price;
+      case 'priceHighLow':
+        return b.price - a.price;
+      case 'dateModified':
+        return new Date(b.dateModified) - new Date(a.dateModified);
+      default:
+        return 0;
+    }
+  });
+
   const filteredProduct = selectedProduct.length === 0
-    ? computerData
-    : computerData.filter(item => selectedProduct.includes(item.company));
+    ? sortedComputers
+    : sortedComputers.filter(item => selectedProduct.includes(item.company));
 
   return (
     <>
       <Navbar />
       <div className="max-w-screen-lg mx-auto px-4 py-6 flex flex-col md:flex-row gap-6">
         <aside className="md:w-1/4 bg-white rounded-xl shadow-md p-4 sticky top-24 self-start">
+          <div className="flex flex-col mb-4">
+            <label className="font-semibold text-gray-900 mb-2">Sort by</label>
+            <select
+              value={sortType}
+              onChange={e => setSortType(e.target.value)}
+              className="border border-gray-300 rounded px-3 py-2 focus:outline-none"
+            >
+              {sortOptions.map(opt => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="my-4 border-t" />
           <h3 className="text-xl font-bold mb-4 text-gray-900">Filter by Company</h3>
           <div className="flex flex-col space-y-3">
             {uniqueCompanies.map((company, idx) => (

@@ -5,11 +5,9 @@ import Navbar from './components/Navbar';
 const UserCart = () => {
   const { cartItems, removeFromCart } = useCart();
   const totalPrice = cartItems.reduce((sum, item) => {
-  const priceNumber = parseFloat(item.price.toString().replace('$', '')) || 0;
-  return sum + priceNumber;
-}, 0);
-
-
+    const priceNumber = parseFloat(item.price.toString().replace('$', '')) || 0;
+    return sum + priceNumber;
+  }, 0);
 
   return (
     <>
@@ -27,7 +25,7 @@ const UserCart = () => {
                   key={item.id}
                   className="flex flex-col sm:flex-row items-center bg-white rounded-xl shadow-md border border-gray-200 p-4 hover:shadow-lg transition-shadow duration-300"
                 >
-                  <div className="w-40 h-40 flex-shrink-0 overflow-hidden rounded-lg">
+                  <div className="w-40 h-40 flex-shrink-0 overflow-hidden rounded-lg bg-white p-2">
                     <img
                       src={item.image}
                       alt={`${item.company} ${item.model}`}
@@ -35,9 +33,9 @@ const UserCart = () => {
                     />
                   </div>
                   <div className="flex flex-col justify-center flex-1 px-6 text-gray-900">
-                    <h3 className="text-xl font-semibold">{item.company}</h3>
-                    <p className="text-lg mt-1">{item.model}</p>
-                    <p className="text-blue-600 font-bold mt-2">${item.price}</p>
+                    <h3 className="text-xl font-semibold text-black">{item.company}</h3>
+                    <p className="text-lg mt-1 text-gray-800">{item.model}</p>
+                    <p className="font-bold mt-2 text-gray-900">${item.price}</p>
                   </div>
                   <button
                     onClick={() => removeFromCart(item)}
