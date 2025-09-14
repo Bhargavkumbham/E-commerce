@@ -13,6 +13,7 @@ import ComputerSingle from './singles/ComputerSingle'
 import BookSingle from './singles/BookSingle'
 import FridgeSingle from './singles/FridgeSingle'
 import AcSingle from './singles/AcSingle'
+import LoginPage from './stores/LoginPage'
 const App = () => {
   return (
     <div>

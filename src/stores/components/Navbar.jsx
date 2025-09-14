@@ -26,9 +26,7 @@ const Navbar = () => {
     if (query) {
       if (productPages[query]) {
         navigate(productPages[query]);
-      } else {
-        navigate(`/search?q=${encodeURIComponent(query)}`);
-      }
+      } 
     }
   };
 
