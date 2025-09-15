@@ -37,7 +37,7 @@ const Navbar = () => {
           to="/"
           className="flex items-center text-gray-900 text-2xl font-extrabold tracking-tight"
         >
-          E-Mart
+          <img src="/assets/logo.png" alt="E-mart" className="h-24 w-auto" />
         </Link>
 
         <form
