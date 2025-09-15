@@ -6,7 +6,7 @@ const Fridges = () => {
 
   return (
     <>
-      <div className="text-3xl font-bold text-gray-900 mb-6 text-center">Fridges</div>
+      <div className="text-3xl font-bold text-gray-900 text-center">Fridges</div>
       <div className="flex flex-wrap justify-center gap-6 px-4">
         {firstFiveImages.map((item, idx) => (
           <div

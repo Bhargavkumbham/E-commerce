@@ -3,12 +3,10 @@ import { acData } from '../stores/data/ac';
 import { useParams } from 'react-router-dom';
 import Navbar from '../stores/components/Navbar';
 import { useCart } from '../stores/context/CartContext';
-
 const AcSingle = () => {
   const { id } = useParams();
   const { addToCart } = useCart();
   const product = acData.find(item => item.id === id || item.id === Number(id));
-
   if (!product) {
     return (
       <>
@@ -19,7 +17,6 @@ const AcSingle = () => {
       </>
     );
   }
-
   return (
     <>
       <Navbar />
@@ -47,5 +44,4 @@ const AcSingle = () => {
     </>
   );
 };
-
 export default AcSingle;

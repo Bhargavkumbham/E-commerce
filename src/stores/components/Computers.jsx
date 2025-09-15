@@ -6,7 +6,7 @@ const Computers = () => {
 
   return (
     <>
-      <h2 className="text-3xl font-bold text-slate-800 tracking-tight mb-6 text-center">
+      <h2 className="text-3xl font-bold text-slate-800 tracking-tight text-center">
         Computers
       </h2>
       <div className="flex flex-wrap justify-center gap-6 px-4">
