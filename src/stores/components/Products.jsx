@@ -29,7 +29,6 @@ const Products = () => {
 
   return (
     <div>
-
       {categories.map(({ title, data }) => (
         <CategorySection key={title} title={title} items={paginate(data)} />
       ))}
@@ -64,15 +63,16 @@ const CategorySection = ({ title, items }) => (
       {items.map((item, idx) => (
         <div
           key={idx}
-          className="bg-white rounded-xl shadow-md border border-gray-200 w-64 flex flex-col items-center hover:shadow-lg transition-shadow duration-300 overflow-hidden"
+          className="bg-white rounded-xl shadow-md border border-gray-200 w-52 h-72 flex flex-col items-center justify-center hover:shadow-lg transition-shadow duration-300 overflow-hidden"
         >
-          <img
-            className={`w-full h-64 transition-transform duration-300 hover:scale-105 ${
-              title === 'Books' ? 'object-contain bg-white' : 'object-cover'
-            }`}
-            src={item.image}
-            alt={item.name || title}
-          />
+          <div className="flex items-center justify-center w-full h-52 bg-gray-50 p-2">
+            <img
+              className="object-contain max-h-full max-w-full"
+              src={item.image}
+              alt={item.name || title}
+              style={{ aspectRatio: title === "Books" ? "3/4" : "4/3" }} 
+            />
+          </div>
         </div>
       ))}
     </div>

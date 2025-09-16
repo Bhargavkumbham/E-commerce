@@ -85,11 +85,13 @@ const AcPage = () => {
               className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden flex flex-col hover:shadow-lg transition-shadow duration-300"
             >
               <Link to={`/ac/${item.id}`}>
-                <img
-                  src={item.image}
-                  alt={`${item.company} ${item.model}`}
-                  className="w-full h-auto object-contain"
-                />
+                <div className="w-full h-48 bg-gray-50 flex items-center justify-center p-4 overflow-hidden rounded-t-xl">
+                  <img
+                    src={item.image}
+                    alt={`${item.company} ${item.model}`}
+                    className="w-full h-full object-cover rounded-xl transition-transform duration-300 hover:scale-105"
+                  />
+                </div>
               </Link>
               <div className="p-3 text-center text-gray-900 font-semibold">
                 {item.company}, {item.model}
