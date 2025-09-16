@@ -15,7 +15,7 @@ const categories = [
   { title: 'Books', data: booksData },
 ];
 
-const PaginatedProducts = () => {
+const Products = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const totalPages = Math.max(
@@ -79,4 +79,4 @@ const CategorySection = ({ title, items }) => (
   </div>
 );
 
-export default PaginatedProducts;
+export default Products;
