@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+import { BookmarkIcon } from '@heroicons/react/24/solid';
+ 
 
 const Navbar = () => {
-  const { cartItems } = useCart();
+  const { cartItems, savedItems } = useCart();
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
@@ -26,7 +28,7 @@ const Navbar = () => {
     if (query) {
       if (productPages[query]) {
         navigate(productPages[query]);
-      } 
+      }
     }
   };
 
@@ -66,6 +68,19 @@ const Navbar = () => {
           >
             Login/SignUp
           </Link>
+
+          <Link
+            to="/saved"
+            className="relative flex items-center gap-1 text-gray-900 hover:text-gray-700 transition"
+            aria-label="Saved Items"
+          >
+            <BookmarkIcon className="h-6 w-6 text-gray-700" />
+            <span className="sr-only">Saved for Later</span>
+            <span className="absolute -top-1 -right-2 bg-gray-700 text-white rounded-full px-2 text-xs font-bold">
+              {savedItems.length}
+            </span>
+          </Link>
+
           <Link
             to="/cart"
             className="relative flex items-center gap-2 text-gray-900 hover:text-gray-700 transition"
@@ -77,6 +92,7 @@ const Navbar = () => {
           </Link>
         </div>
       </div>
+
       <div className="bg-gray-200 border-t border-gray-300">
         <ul className="flex justify-center gap-3 py-2 text-gray-700 text-base font-semibold">
           {["mobiles", "computers", "books", "fridges", "ac"].map((item) => (
