@@ -14,6 +14,7 @@ import BookSingle from './singles/BookSingle'
 import FridgeSingle from './singles/FridgeSingle'
 import AcSingle from './singles/AcSingle'
 import SavedItemsPage from './stores/SavedItemsPage'
+import LoginSignup from './stores/LoginSignup'
 const App = () => {
   return (
     <div>
@@ -31,6 +32,7 @@ const App = () => {
         <Route path='/fridges/:id' element={<FridgeSingle/>}></Route>
         <Route path='/ac/:id' element={<AcSingle/>}></Route>
         <Route path='/saved' element={<SavedItemsPage/>}></Route>
+        <Route path='/login' element={<LoginSignup/>}></Route>
       </Routes>
     </div>
     

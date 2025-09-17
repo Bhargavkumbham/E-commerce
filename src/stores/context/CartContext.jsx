@@ -9,7 +9,6 @@ export const CartProvider = ({ children }) => {
   const addToCart = (item) => {
     setCartItems([...cartItems, item]);
   };
-
   const removeFromCart = (item) => {
     setCartItems(cartItems.filter(i => i !== item));
   };
@@ -23,6 +22,9 @@ export const CartProvider = ({ children }) => {
     setSavedItems(savedItems.filter(i => i !== item));
     setCartItems([...cartItems, item]);
   };
+  const removeFromSaved = (item) => {
+    setSavedItems(savedItems.filter(i => i !== item));
+  };
 
   return (
     <CartContext.Provider
@@ -33,6 +35,7 @@ export const CartProvider = ({ children }) => {
         removeFromCart,
         saveForLater,
         moveToCart,
+        removeFromSaved,
       }}
     >
       {children}

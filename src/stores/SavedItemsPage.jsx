@@ -3,14 +3,13 @@ import { useCart } from './context/CartContext';
 import Navbar from './components/Navbar';
 
 const SavedItemsPage = () => {
-  const { savedItems, moveToCart } = useCart();
+  const { savedItems, moveToCart, removeFromSaved } = useCart();
 
   return (
     <>
       <Navbar />
       <div className="max-w-screen-lg mx-auto px-4 py-6">
         <h2 className="text-3xl font-bold text-gray-900 my-6 text-center">Saved for Later</h2>
-
         {savedItems.length === 0 ? (
           <p className="text-center text-gray-700 text-lg">No saved items</p>
         ) : (
@@ -32,13 +31,16 @@ const SavedItemsPage = () => {
                   <p className="text-lg mt-1 text-gray-700">{item.model}</p>
                   <p className="font-bold mt-2 text-gray-900">${item.price}</p>
                 </div>
-                <div className="flex flex-col mt-4 sm:mt-0">
+                <div className="flex flex-col mt-4 sm:mt-0 space-y-2">
                   <button
                     onClick={() => moveToCart(item)}
                     className="bg-gray-700 hover:bg-gray-800 text-white font-semibold rounded-md px-4 py-2 transition"
                   >
                     Move to Cart
                   </button>
+                  <button onClick={() => removeFromSaved(item)}  className="bg-gray-400 hover:bg-gray-500 text-white font-semibold rounded-md px-4 py-2 transition">
+                   Remove
+                 </button>
                 </div>
               </div>
             ))}
