@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { BookmarkIcon } from '@heroicons/react/24/solid';
- 
+ import { ShoppingCartIcon } from '@heroicons/react/24/solid';
 
 const Navbar = () => {
   const { cartItems, savedItems } = useCart();
@@ -75,17 +75,13 @@ const Navbar = () => {
             aria-label="Saved Items"
           >
             <BookmarkIcon className="h-6 w-6 text-gray-700" />
-            <span className="sr-only">Saved for Later</span>
-            <span className="absolute -top-1 -right-2 bg-gray-700 text-white rounded-full px-2 text-xs font-bold">
-              {savedItems.length}
-            </span>
           </Link>
 
           <Link
             to="/cart"
             className="relative flex items-center gap-2 text-gray-900 hover:text-gray-700 transition"
           >
-            <span>Cart</span>
+            <ShoppingCartIcon className="h-6 w-6 text-gray-700" />
             <span className="bg-gray-700 text-white rounded-full px-2 text-xs font-bold">
               {cartItems.length}
             </span>
