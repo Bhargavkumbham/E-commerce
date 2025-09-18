@@ -8,8 +8,10 @@ const BookSingle = () => {
   const { id } = useParams();
   const { addToCart } = useCart();
   const navigate = useNavigate();
+
   const product = booksData.find(item => item.id === id || item.id === Number(id));
   const [added, setAdded] = useState(false);
+  const [quantity, setQuantity] = useState(1);
 
   if (!product) {
     return (
@@ -32,9 +34,14 @@ const BookSingle = () => {
   }
 
   const handleAddToCart = () => {
-    addToCart(product);
+    addToCart({ ...product, quantity });
     setAdded(true);
     setTimeout(() => setAdded(false), 1500);
+  };
+
+  const handleQuantityChange = (e) => {
+    const val = parseInt(e.target.value);
+    if (val > 0) setQuantity(val);
   };
 
   return (
@@ -58,6 +65,17 @@ const BookSingle = () => {
           <h3 className="text-xl font-semibold mb-2 text-gray-800">by {product.author}</h3>
           <p className="font-bold text-2xl mb-6 text-gray-900">${product.price}</p>
           <p className="text-gray-700 mb-6">{product.description}</p>
+
+          <label htmlFor="quantity" className="mb-2 font-semibold">Quantity</label>
+          <input
+            id="quantity"
+            type="number"
+            min="1"
+            value={quantity}
+            onChange={handleQuantityChange}
+            className="w-20 px-3 py-2 border border-gray-300 rounded-md mb-6 focus:outline-none focus:ring-2 focus:ring-gray-400"
+          />
+
           <button
             onClick={handleAddToCart}
             className={`w-fit bg-gray-800 hover:bg-gray-900 text-white font-semibold px-6 py-3 rounded-lg shadow-md transition-colors duration-300 disabled:opacity-50`}

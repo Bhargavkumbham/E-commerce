@@ -3,18 +3,23 @@ import { useCart } from './context/CartContext';
 import Navbar from './components/Navbar';
 
 const UserCart = () => {
-  const { cartItems, removeFromCart, saveForLater } = useCart();
+  const { cartItems, removeFromCart, saveForLater, updateQuantity } = useCart();
 
   const totalPrice = cartItems.reduce((sum, item) => {
     const priceNumber = parseFloat(item.price.toString().replace('$', '')) || 0;
-    return sum + priceNumber;
+    const qty = item.quantity || 1;
+    return sum + priceNumber * qty;
   }, 0);
+
+  const handleQuantityChange = (item, value) => {
+    const qty = Math.max(1, Number(value));
+    updateQuantity(item.id, qty);
+  };
 
   return (
     <>
       <Navbar />
       <div className="max-w-screen-lg mx-auto px-4 py-6">
-
         <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">Your Cart</h2>
 
         {cartItems.length === 0 ? (
@@ -37,6 +42,15 @@ const UserCart = () => {
                   <h3 className="text-xl font-semibold text-black">{item.company}</h3>
                   <p className="text-lg mt-1 text-gray-800">{item.model}</p>
                   <p className="font-bold mt-2 text-gray-900">${item.price}</p>
+                  <label className="mt-3 font-semibold" htmlFor={`qty-${item.id}`}>Quantity</label>
+                  <input
+                    id={`qty-${item.id}`}
+                    type="number"
+                    min="1"
+                    value={item.quantity || 1}
+                    onChange={(e) => handleQuantityChange(item, e.target.value)}
+                    className="w-20 px-2 py-1 border border-gray-300 rounded-md mt-1"
+                  />
                 </div>
                 <div className="flex flex-col space-y-2 mt-4 sm:mt-0">
                   <button
