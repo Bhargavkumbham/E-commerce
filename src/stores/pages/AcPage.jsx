@@ -93,8 +93,22 @@ const AcPage = () => {
             ))}
           </div>
         </aside>
-
         <main className="md:w-3/4">
+          <nav className="text-sm text-gray-600 mb-4" aria-label="Breadcrumb">
+            <ol className="list-reset flex">
+              <li>
+                <Link to="/" className="text-gray-700 underline hover:text-gray-900">
+                  Home
+                </Link>
+              </li>
+              <li>
+                <span className="mx-2">/</span>
+              </li>
+              <li className="text-gray-500" aria-current="page">
+                Air Conditioners
+              </li>
+            </ol>
+          </nav>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {paginatedProducts.map((item) => (
               <div
@@ -116,12 +130,11 @@ const AcPage = () => {
               </div>
             ))}
           </div>
-
           <div className="flex justify-center mt-6 space-x-3">
             <button
               onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}
               disabled={currentPage === 1}
-              className="px-3 py-1 rounded border border-gray-400 bg-gray-100 text-gray-600 disabled:opacity-40"
+              className="px-3 py-1 rounded border border-gray-400 bg-gray-100 text-gray-600 disabled:opacity-50"
             >
               Prev
             </button>
@@ -141,7 +154,7 @@ const AcPage = () => {
             <button
               onClick={() => handlePageChange(Math.min(currentPage + 1, totalPages))}
               disabled={currentPage === totalPages}
-              className="px-3 py-1 rounded border border-gray-400 bg-gray-100 text-gray-600 disabled:opacity-40"
+              className="px-3 py-1 rounded border border-gray-400 bg-gray-100 text-gray-600 disabled:opacity-50"
             >
               Next
             </button>

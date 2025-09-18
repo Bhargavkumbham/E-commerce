@@ -18,11 +18,11 @@ const MobilePage = () => {
 
   const uniqueCompanies = [...new Set(mobileData.map((item) => item.company))];
 
-  const companyHandler = (mango) => {
-    if (selectedProduct.includes(mango)) {
-      setSelectedProduct(selectedProduct.filter((item) => item !== mango));
+  const companyHandler = (company) => {
+    if (selectedProduct.includes(company)) {
+      setSelectedProduct(selectedProduct.filter((item) => item !== company));
     } else {
-      setSelectedProduct([...selectedProduct, mango]);
+      setSelectedProduct([...selectedProduct, company]);
     }
     setCurrentPage(1);
   };
@@ -43,7 +43,7 @@ const MobilePage = () => {
   const filteredProduct =
     selectedProduct.length === 0
       ? sortedMobiles
-      : sortedMobiles.filter((orange) => selectedProduct.includes(orange.company));
+      : sortedMobiles.filter((mobile) => selectedProduct.includes(mobile.company));
 
   const totalPages = Math.ceil(filteredProduct.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -95,6 +95,21 @@ const MobilePage = () => {
           </div>
         </aside>
         <main className="md:w-3/4">
+          <nav className="text-sm text-gray-600 mb-4" aria-label="Breadcrumb">
+            <ol className="list-reset flex">
+              <li>
+                <Link to="/" className="text-gray-700 underline hover:text-gray-900">
+                  Home
+                </Link>
+              </li>
+              <li>
+                <span className="mx-2">/</span>
+              </li>
+              <li className="text-gray-500" aria-current="page">
+                Mobiles
+              </li>
+            </ol>
+          </nav>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {paginatedProducts.map((item) => (
               <div
