@@ -36,7 +36,7 @@ const AcSingle = () => {
   const handleAddToCart = () => {
     addToCart({ ...product, quantity });
     setAdded(true);
-    setTimeout(() => setAdded(false), 1500);
+    setTimeout(() => setAdded(false), 1000);
   };
 
   const handleQuantityChange = (e) => {

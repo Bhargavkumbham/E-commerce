@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
-import { BookmarkIcon } from '@heroicons/react/24/solid';
-import { ShoppingCartIcon } from '@heroicons/react/24/solid';
+import { BookmarkIcon, ShoppingCartIcon, ChevronDownIcon } from '@heroicons/react/24/solid';
 
 const Navbar = () => {
   const { cartItems } = useCart();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [showInvalidPopup, setShowInvalidPopup] = useState(false);
   const navigate = useNavigate();
 
   const productPages = {
@@ -22,6 +22,7 @@ const Navbar = () => {
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
+    if (showInvalidPopup) setShowInvalidPopup(false);
   };
 
   const handleCategoryChange = (e) => {
@@ -34,10 +35,12 @@ const Navbar = () => {
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     const query = searchTerm.trim().toLowerCase();
-
     if (query) {
       if (productPages[query]) {
         navigate(productPages[query]);
+      } else {
+        setShowInvalidPopup(true);
+        setTimeout(() => setShowInvalidPopup(false), 2000);
       }
     }
   };
@@ -45,36 +48,37 @@ const Navbar = () => {
   return (
     <nav className="w-full bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 shadow-lg rounded-b-lg border-t border-b border-gray-300">
       <div className="max-w-screen-lg mx-auto flex flex-wrap items-center justify-between px-6 py-4">
-        <Link
-          to="/"
-          className="flex items-center"
-        >
+        <Link to="/" className="flex items-center">
           <img src="/assets/logo.png" alt="E-mart" className="h-24 w-auto" />
         </Link>
-
         <form
           onSubmit={handleSearchSubmit}
-          className="hidden md:flex items-center flex-1 justify-center mx-6 space-x-4"
+          className="hidden md:flex items-center flex-1 justify-center mx-6 space-x-4 relative"
         >
-          <div className="flex">
-            <input
-              type="text"
-              placeholder="Search..."
-              value={searchTerm}
-              onChange={handleSearchChange}
-              className="w-64 px-4 py-2 border border-gray-300 bg-white text-gray-900 rounded-l-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400 transition"
-              style={{ borderRightWidth: 0 }}
-            />
-
-            <button
-              type="submit"
-              className="px-5 py-2 bg-gray-600 text-white rounded-r-md shadow hover:bg-gray-700 transition border border-gray-300 border-l-0"
-            >
-              Search
-            </button>
+          <div className="flex flex-col relative">
+            <div className="flex">
+              <input
+                type="text"
+                placeholder="Search..."
+                value={searchTerm}
+                onChange={handleSearchChange}
+                className="w-64 px-4 py-2 border border-gray-300 bg-white text-gray-900 rounded-l-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400 transition"
+                style={{ borderRightWidth: 0 }}
+              />
+              <button
+                type="submit"
+                className="px-5 py-2 bg-gray-600 text-white rounded-r-md shadow hover:bg-gray-700 transition border border-gray-300 border-l-0"
+              >
+                Search
+              </button>
+            </div>
+            {showInvalidPopup && (
+              <div className="absolute top-full left-0 mt-2 w-64 bg-red-50 border border-red-400 text-red-700 px-4 py-2 rounded shadow z-10">
+                Category not found.
+              </div>
+            )}
           </div>
-
-          <div className="relative">
+          <div className="relative inline-block text-left">
             <label htmlFor="category-select" className="sr-only">
               Categories
             </label>
@@ -82,7 +86,7 @@ const Navbar = () => {
               id="category-select"
               value={selectedCategory}
               onChange={handleCategoryChange}
-              className="px-4 py-2 border border-gray-300 bg-white text-gray-900 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400 cursor-pointer transition"
+              className="appearance-none w-full pl-4 pr-10 py-2 border border-gray-300 bg-white text-gray-900 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400 cursor-pointer transition"
               aria-label="Select category"
             >
               <option value="" disabled>
@@ -94,9 +98,11 @@ const Navbar = () => {
                 </option>
               ))}
             </select>
+            <div className="pointer-events-none absolute inset-y-0 right-2 flex items-center">
+              <ChevronDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+            </div>
           </div>
         </form>
-
         <div className="flex items-center gap-8">
           <Link
             to="/login"
@@ -104,7 +110,6 @@ const Navbar = () => {
           >
             Login / Sign Up
           </Link>
-
           <Link
             to="/saved"
             className="relative flex items-center gap-1 text-gray-700 hover:text-gray-900 transition"
@@ -112,7 +117,6 @@ const Navbar = () => {
           >
             <BookmarkIcon className="h-6 w-6" />
           </Link>
-
           <Link
             to="/cart"
             className="relative flex items-center gap-2 text-gray-700 hover:text-gray-900 transition"
