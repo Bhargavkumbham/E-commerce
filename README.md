@@ -25,11 +25,46 @@ Responsive UI, grey-white theme.
 ## Getting Started
 
 git clone (https://github.com/yourusername/e-mart.git)
+
 cd e-mart
+
 npm install
+
 npm run dev
 
-## Expanding the ESLint configuration
+## Folder Structure
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-# E-commerce
+public/
+  assets/        # Images, logo
+src/
+  singles/       # Single product pages 
+  stores/
+    components/    # Navbar, ProductList
+    context/       # Cart context
+    data/          # Product data files (mobileData.js, acData.js etc.)
+    pages/         # Category pages(filter,sort,etc)
+    LoginSignup.jsx
+    SavedItemsPage.jsx
+    UserCart.jsx
+  App.jsx
+  main.jsx
+
+## Planned Improvements
+
+User Authentication: Login/signup system
+
+Mock API / Backend Integration: Replace static files with scalable API
+
+Search Autocomplete: Enhance product search
+
+## Tech Stack
+
+React (Components, Hooks)
+
+Tailwind CSS
+
+React Router
+
+Context API (Cart)
+
+Static Data (JS files, public assets)
