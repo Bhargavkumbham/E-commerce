@@ -40,17 +40,18 @@ public/
   assets/               # Images, logo
 
 src/
-  singles/              # Single product pages
+  singles/                # Single product pages
   stores/
-    components/         # Navbar, ProductList, etc.
-    context/            # Cart context
-  data/                 # Product data files (mobileData.js, acData.js, etc.)
-  pages/                # Category pages (filter, sort, etc.)
-  LoginSignup.jsx       # Login and signup component
-  SavedItemsPage.jsx    # Saved items component
-  UserCart.jsx          # User cart component
-  App.jsx               # Main App component
-  main.jsx              # Entry point
+    components/           # Navbar, ProductList, etc.
+    context/              # Cart context
+    data/                 # Product data files (mobileData.js, acData.js, etc.)
+    pages/                # Category pages (filter, sort, etc.)
+    LoginSignup.jsx       # Login and signup component
+    SavedItemsPage.jsx    # Saved items component
+    UserCart.jsx          # User cart component
+  App.jsx                 # Main App component
+  main.jsx                # Entry point
+
 
 ```
 
