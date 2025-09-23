@@ -23,8 +23,9 @@ Tailwind CSS:
 Responsive UI, grey-white theme.
 
 ## Getting Started
+inside teminal:
 
-git clone https://github.com/yourusername/e-mart.git
+git clone https://github.com/Bhargavkumbham/E-commerce.git
 
 cd e-commerce-site
 
