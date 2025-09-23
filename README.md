@@ -34,20 +34,24 @@ npm run dev
 
 ## Folder Structure
 
+```
 public/
-  assets/        # Images, logo
+  assets/               # Images, logo
+
 src/
-  singles/       # Single product pages 
+  singles/              # Single product pages
   stores/
-    components/    # Navbar, ProductList
-    context/       # Cart context
-    data/          # Product data files (mobileData.js, acData.js etc.)
-    pages/         # Category pages(filter,sort,etc)
-    LoginSignup.jsx
-    SavedItemsPage.jsx
-    UserCart.jsx
-  App.jsx
-  main.jsx
+    components/         # Navbar, ProductList, etc.
+    context/            # Cart context
+  data/                 # Product data files (mobileData.js, acData.js, etc.)
+  pages/                # Category pages (filter, sort, etc.)
+  LoginSignup.jsx       # Login and signup component
+  SavedItemsPage.jsx    # Saved items component
+  UserCart.jsx          # User cart component
+  App.jsx               # Main App component
+  main.jsx              # Entry point
+
+```
 
 ## Planned Improvements
 
