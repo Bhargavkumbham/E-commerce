@@ -24,9 +24,9 @@ Responsive UI, grey-white theme.
 
 ## Getting Started
 
-git clone (https://github.com/yourusername/e-mart.git)
+git clone https://github.com/yourusername/e-mart.git
 
-cd e-mart
+cd e-commerce-site
 
 npm install
 
