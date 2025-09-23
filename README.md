@@ -1,11 +1,33 @@
-# React + Vite
+# E-mart
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+E-mart is a modern React-based e-commerce platform for browsing products by category, sorting, and managing a shopping cart. The UI features a clean grey-and-white theme styled with Tailwind CSS. Product data and images use static local files for fast prototyping and learning.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Product Catalog:
+Mobiles, Computers, Air Conditioners, Fridges, and Books.
+
+Category Pages:
+Responsive product grids, filtering by category, sort by price/date modified.
+
+Cart Functionality:
+Add, update quantity, and remove items from cart.
+
+Static Data:
+Product info and images stored in /src/data/ and public/assets/.
+
+Branding:
+Custom E-mart logo and tagline.
+
+Tailwind CSS:
+Responsive UI, grey-white theme.
+
+## Getting Started
+
+git clone (https://github.com/yourusername/e-mart.git)
+cd e-mart
+npm install
+npm run dev
 
 ## Expanding the ESLint configuration
 
