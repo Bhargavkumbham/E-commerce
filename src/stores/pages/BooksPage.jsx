@@ -1,22 +1,33 @@
-import React, { useState } from 'react';
-import { booksData } from '../data/books';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Navbar from '../components/Navbar';
 import { Link } from 'react-router-dom';
 
 const sortOptions = [
   { value: 'priceLowHigh', label: 'Prices: Low to High' },
   { value: 'priceHighLow', label: 'Prices: High to Low' },
-  { value: 'dateModified', label: 'Date Modified' },
 ];
 
 const itemsPerPage = 9;
 
 const BooksPage = () => {
+  const [books, setBooks] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState([]);
   const [sortType, setSortType] = useState('priceLowHigh');
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(true);
 
-  const uniqueBooks = [...new Set(booksData.map(item => item.category))];
+  useEffect(() => {
+    setLoading(true);
+    axios.get('https://fakestoreapi.com/products')
+      .then((response) => {
+        setBooks(response.data);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
+
+  const uniqueBooks = [...new Set(books.map(item => item.category))];
 
   const categoryHandler = (category) => {
     if (selectedProduct.includes(category)) {
@@ -27,14 +38,12 @@ const BooksPage = () => {
     setCurrentPage(1);
   };
 
-  const sortedBooks = [...booksData].sort((a, b) => {
+  const sortedBooks = [...books].sort((a, b) => {
     switch (sortType) {
       case 'priceLowHigh':
         return a.price - b.price;
       case 'priceHighLow':
         return b.price - a.price;
-      case 'dateModified':
-        return new Date(b.dateModified) - new Date(a.dateModified);
       default:
         return 0;
     }
@@ -93,7 +102,6 @@ const BooksPage = () => {
             ))}
           </div>
         </aside>
-
         <main className="md:w-3/4">
           <nav className="text-sm text-gray-600 mb-4" aria-label="Breadcrumb">
             <ol className="list-reset flex">
@@ -110,29 +118,31 @@ const BooksPage = () => {
               </li>
             </ol>
           </nav>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            {paginatedBooks.map(item => (
-              <div
-                key={item.id}
-                className="bg-white rounded-xl shadow-md border border-gray-300 overflow-hidden flex flex-col hover:shadow-lg transition-shadow duration-300"
-              >
-                <Link to={`/books/${item.id}`}>
-                  <div className="w-full h-48 bg-gray-50 flex items-center justify-center p-4 overflow-hidden rounded-t-xl">
-                    <img
-                      src={item.image}
-                      alt={`${item.title} by ${item.author}`}
-                      className="max-h-full max-w-full object-contain rounded-xl transition-transform duration-300 hover:scale-105"
-                    />
+          {loading ? (
+            <div className="text-center my-8 text-xl text-gray-700">Loading books...</div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+              {paginatedBooks.map(item => (
+                <div
+                  key={item.id}
+                  className="bg-white rounded-xl shadow-md border border-gray-300 overflow-hidden flex flex-col hover:shadow-lg transition-shadow duration-300"
+                >
+                  <Link to={`/books/${item.id}`}>
+                    <div className="w-full h-48 bg-gray-50 flex items-center justify-center p-4 overflow-hidden rounded-t-xl">
+                      <img
+                        src={item.image}
+                        alt={item.title}
+                        className="max-w-full max-h-full object-contain rounded-xl transition-transform duration-300 hover:scale-105 bg-white"
+                      />
+                    </div>
+                  </Link>
+                  <div className="p-3 text-center text-gray-900 font-semibold">
+                    {item.title}
                   </div>
-                </Link>
-                <div className="p-3 text-center text-gray-900 font-semibold">
-                  {item.title}, {item.author}
                 </div>
-              </div>
-            ))}
-          </div>
-
+              ))}
+            </div>
+          )}
           <div className="flex justify-center mt-6 space-x-3">
             <button
               onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}

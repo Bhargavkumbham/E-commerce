@@ -1,22 +1,33 @@
-import React, { useState } from 'react';
-import { computerData } from '../data/computers';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Navbar from '../components/Navbar';
 import { Link } from 'react-router-dom';
 
 const sortOptions = [
   { value: 'priceLowHigh', label: 'Price: Low to High' },
   { value: 'priceHighLow', label: 'Price: High to Low' },
-  { value: 'dateModified', label: 'Date Modified' },
 ];
 
 const itemsPerPage = 9;
 
 const ComputerPage = () => {
+  const [computers, setComputers] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState([]);
   const [sortType, setSortType] = useState('priceLowHigh');
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(true);
 
-  const uniqueCompanies = [...new Set(computerData.map(item => item.company))];
+  useEffect(() => {
+    setLoading(true);
+    axios.get('https://fakestoreapi.com/products') // Replace with computers API
+      .then((response) => {
+        setComputers(response.data);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
+
+  const uniqueCompanies = [...new Set(computers.map(item => item.category))];
 
   const companyHandler = (product) => {
     if (selectedProduct.includes(product)) {
@@ -27,14 +38,12 @@ const ComputerPage = () => {
     setCurrentPage(1);
   };
 
-  const sortedComputers = [...computerData].sort((a, b) => {
+  const sortedComputers = [...computers].sort((a, b) => {
     switch (sortType) {
       case 'priceLowHigh':
         return a.price - b.price;
       case 'priceHighLow':
         return b.price - a.price;
-      case 'dateModified':
-        return new Date(b.dateModified) - new Date(a.dateModified);
       default:
         return 0;
     }
@@ -42,7 +51,7 @@ const ComputerPage = () => {
 
   const filteredProduct = selectedProduct.length === 0
     ? sortedComputers
-    : sortedComputers.filter(item => selectedProduct.includes(item.company));
+    : sortedComputers.filter(item => selectedProduct.includes(item.category));
 
   const totalPages = Math.ceil(filteredProduct.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -93,7 +102,6 @@ const ComputerPage = () => {
             ))}
           </div>
         </aside>
-
         <main className="md:w-3/4">
           <nav className="text-sm text-gray-600 mb-4" aria-label="Breadcrumb">
             <ol className="list-reset flex">
@@ -110,29 +118,31 @@ const ComputerPage = () => {
               </li>
             </ol>
           </nav>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            {paginatedProducts.map(item => (
-              <div
-                key={item.id}
-                className="bg-white rounded-xl shadow-md border border-gray-300 overflow-hidden flex flex-col hover:shadow-lg transition-shadow duration-300"
-              >
-                <Link to={`/computers/${item.id}`}>
-                  <div className="w-full h-48 bg-gray-50 flex items-center justify-center p-4 overflow-hidden rounded-t-xl">
-                    <img
-                      src={item.image}
-                      alt={`${item.company} ${item.model}`}
-                      className="w-full h-full object-contain rounded-xl transition-transform duration-300 hover:scale-105"
-                    />
+          {loading ? (
+            <div className="text-center my-8 text-xl text-gray-700">Loading computers...</div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+              {paginatedProducts.map(item => (
+                <div
+                  key={item.id}
+                  className="bg-white rounded-xl shadow-md border border-gray-300 overflow-hidden flex flex-col hover:shadow-lg transition-shadow duration-300"
+                >
+                  <Link to={`/computers/${item.id}`}>
+                    <div className="w-full h-48 bg-gray-50 flex items-center justify-center p-4 overflow-hidden rounded-t-xl">
+                      <img
+                        src={item.image}
+                        alt={item.title}
+                        className="max-w-full max-h-full object-contain rounded-xl transition-transform duration-300 hover:scale-105 bg-white"
+                      />
+                    </div>
+                  </Link>
+                  <div className="p-3 text-center text-gray-900 font-semibold">
+                    {item.title}
                   </div>
-                </Link>
-                <div className="p-3 text-center text-gray-900 font-semibold">
-                  {item.company}, {item.model}
                 </div>
-              </div>
-            ))}
-          </div>
-
+              ))}
+            </div>
+          )}
           <div className="flex justify-center mt-6 space-x-3">
             <button
               onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}

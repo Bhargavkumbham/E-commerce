@@ -1,52 +1,62 @@
-import React, { useState } from 'react';
-import { acData } from '../data/ac';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Navbar from '../components/Navbar';
 import { Link } from 'react-router-dom';
 
 const sortOptions = [
   { value: 'priceLowHigh', label: 'Price: Low to High' },
   { value: 'priceHighLow', label: 'Price: High to Low' },
-  { value: 'dateModified', label: 'Date Modified' },
 ];
 
 const itemsPerPage = 9;
 
 const AcPage = () => {
-  const [selectedProduct, setSelectedProduct] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState([]);
   const [sortType, setSortType] = useState('priceLowHigh');
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(true);
 
-  const uniqueCompanies = [...new Set(acData.map(item => item.company))];
+  useEffect(() => {
+    setLoading(true);
+    axios.get('https://fakestoreapi.com/products')
+      .then((response) => {
+        setProducts(response.data);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
 
-  const companyHandler = (product) => {
-    if (selectedProduct.includes(product)) {
-      setSelectedProduct(selectedProduct.filter((item) => item !== product));
+  const uniqueCategories = [...new Set(products.map(item => item.category))];
+
+  const categoryHandler = (cat) => {
+    if (selectedCategory.includes(cat)) {
+      setSelectedCategory(selectedCategory.filter((item) => item !== cat));
     } else {
-      setSelectedProduct([...selectedProduct, product]);
+      setSelectedCategory([...selectedCategory, cat]);
     }
     setCurrentPage(1);
   };
 
-  const sortedAc = [...acData].sort((a, b) => {
+  const sortedProducts = [...products].sort((a, b) => {
     switch (sortType) {
       case 'priceLowHigh':
         return a.price - b.price;
       case 'priceHighLow':
         return b.price - a.price;
-      case 'dateModified':
-        return new Date(b.dateModified) - new Date(a.dateModified);
       default:
         return 0;
     }
   });
 
-  const filteredProduct = selectedProduct.length === 0
-    ? sortedAc
-    : sortedAc.filter((item) => selectedProduct.includes(item.company));
+  const filteredProducts =
+    selectedCategory.length === 0
+      ? sortedProducts
+      : sortedProducts.filter((item) => selectedCategory.includes(item.category));
 
-  const totalPages = Math.ceil(filteredProduct.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedProducts = filteredProduct.slice(startIndex, startIndex + itemsPerPage);
+  const paginatedProducts = filteredProducts.slice(startIndex, startIndex + itemsPerPage);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -75,9 +85,9 @@ const AcPage = () => {
             </select>
           </div>
           <div className="my-4 border-t border-gray-300" />
-          <h3 className="text-xl font-bold mb-4 text-gray-900">Filter by Company</h3>
+          <h3 className="text-xl font-bold mb-4 text-gray-900">Filter by Category</h3>
           <div className="flex flex-col space-y-3">
-            {uniqueCompanies.map((company, idx) => (
+            {uniqueCategories.map((cat, idx) => (
               <label
                 key={idx}
                 className="flex items-center space-x-3 cursor-pointer select-none text-gray-800 font-semibold"
@@ -85,10 +95,10 @@ const AcPage = () => {
                 <input
                   type="checkbox"
                   className="w-5 h-5 text-gray-600 rounded border-gray-400 focus:ring-gray-500"
-                  checked={selectedProduct.includes(company)}
-                  onChange={() => companyHandler(company)}
+                  checked={selectedCategory.includes(cat)}
+                  onChange={() => categoryHandler(cat)}
                 />
-                <span>{company}</span>
+                <span>{cat}</span>
               </label>
             ))}
           </div>
@@ -109,27 +119,31 @@ const AcPage = () => {
               </li>
             </ol>
           </nav>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            {paginatedProducts.map((item) => (
-              <div
-                key={item.id}
-                className="bg-white rounded-xl shadow-md border border-gray-300 overflow-hidden flex flex-col hover:shadow-lg transition-shadow duration-300"
-              >
-                <Link to={`/ac/${item.id}`}>
-                  <div className="w-full h-48 bg-gray-50 flex items-center justify-center p-4 overflow-hidden rounded-t-xl">
-                    <img
-                      src={item.image}
-                      alt={`${item.company} ${item.model}`}
-                      className="w-full h-full object-cover rounded-xl transition-transform duration-300 hover:scale-105"
-                    />
-                  </div>
-                </Link>
-                <div className="p-3 text-center text-gray-900 font-semibold">
-                  {item.company}, {item.model}
+          {loading ? (
+            <div className="text-center my-8 text-xl text-gray-700">Loading products...</div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+              {paginatedProducts.map((item) => (
+                <div
+                  key={item.id}
+                  className="bg-white rounded-xl shadow-md border border-gray-300 overflow-hidden flex flex-col hover:shadow-lg transition-shadow duration-300"
+                >
+                  <Link to={`/ac/${item.id}`}>
+                    <div className="w-full h-48 bg-gray-50 flex items-center justify-center p-4 overflow-hidden rounded-t-xl">
+                      <img
+                        src={item.image}
+                        alt={item.title}
+                        className="max-w-full max-h-full object-contain rounded-xl transition-transform duration-300 hover:scale-105 bg-white"
+                      />
                 </div>
-              </div>
-            ))}
-          </div>
+                  </Link>
+                  <div className="p-3 text-center text-gray-900 font-semibold">
+                    {item.title}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
           <div className="flex justify-center mt-6 space-x-3">
             <button
               onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}
