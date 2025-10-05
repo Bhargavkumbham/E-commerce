@@ -16,15 +16,32 @@ const ComputerPage = () => {
   const [sortType, setSortType] = useState('priceLowHigh');
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [status, setStatus] = useState(null);
 
   useEffect(() => {
-    setLoading(true);
-    axios.get('https://fakestoreapi.com/products') // Replace with computers API
-      .then((response) => {
-        setComputers(response.data);
+    const fetchComputers = async () => {
+      try {
+        setLoading(true);
+        const res = await axios.get('https://fakestoreapi.com/products');
+        setComputers(res.data);
+        setStatus(res.status);
+      } catch (error) {
+        if (error.response) {
+          setStatus(error.response.status);
+          setComputers([]);
+        } else if (error.request) {
+          setStatus(null);
+          setComputers([]);
+        } else {
+          setStatus(null);
+          setComputers([]);
+        }
+      } finally {
         setLoading(false);
-      })
-      .catch(() => setLoading(false));
+      }
+    };
+
+    fetchComputers();
   }, []);
 
   const uniqueCompanies = [...new Set(computers.map(item => item.category))];

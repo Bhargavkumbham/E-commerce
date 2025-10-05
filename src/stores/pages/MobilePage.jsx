@@ -16,15 +16,32 @@ const MobilePage = () => {
   const [sortType, setSortType] = useState('priceLowHigh');
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [status, setStatus] = useState(null);
 
   useEffect(() => {
-    setLoading(true);
-    axios.get('https://fakestoreapi.com/products') // Replace with mobiles API if available
-      .then((response) => {
-        setMobiles(response.data);
+    const fetchMobiles = async () => {
+      try {
+        setLoading(true);
+        const res = await axios.get('https://fakestoreapi.com/products');
+        setMobiles(res.data);
+        setStatus(res.status);
+      } catch (error) {
+        if (error.response) {
+          setStatus(error.response.status);
+          setMobiles([]);
+        } else if (error.request) {
+          setStatus(null);
+          setMobiles([]);
+        } else {
+          setStatus(null);
+          setMobiles([]);
+        }
+      } finally {
         setLoading(false);
-      })
-      .catch(() => setLoading(false));
+      }
+    };
+
+    fetchMobiles();
   }, []);
 
   const uniqueCompanies = [...new Set(mobiles.map((item) => item.category))];

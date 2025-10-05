@@ -13,19 +13,32 @@ const MobileSingle = () => {
   const [added, setAdded] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [status, setStatus] = useState(null);
 
   useEffect(() => {
-    setLoading(true);
-    axios
-      .get(`https://fakestoreapi.com/products/${id}`)
-      .then((res) => {
+    const fetchProduct = async () => {
+      try {
+        setLoading(true);
+        const res = await axios.get(`https://fakestoreapi.com/products/${id}`);
         setProduct(res.data);
+        setStatus(res.status);
+      } catch (error) {
+        if (error.response) {
+          setStatus(error.response.status);
+          setProduct(null);
+        } else if (error.request) {
+          setStatus(null);
+          setProduct(null);
+        } else {
+          setStatus(null);
+          setProduct(null);
+        }
+      } finally {
         setLoading(false);
-      })
-      .catch(() => {
-        setProduct(null);
-        setLoading(false);
-      });
+      }
+    };
+
+    fetchProduct();
   }, [id]);
 
   if (loading) {

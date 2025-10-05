@@ -16,15 +16,32 @@ const AcPage = () => {
   const [sortType, setSortType] = useState('priceLowHigh');
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [status, setStatus] = useState(null);
 
   useEffect(() => {
-    setLoading(true);
-    axios.get('https://fakestoreapi.com/products')
-      .then((response) => {
-        setProducts(response.data);
+    const fetchProduct = async () => {
+      try {
+        setLoading(true);
+        const res = await axios.get('https://fakestoreapi.com/products');
+        setProducts(res.data);
+        setStatus(res.status);
+      } catch (error) {
+        if (error.response) {
+          setStatus(error.response.status);
+          setProducts([]);
+        } else if (error.request) {
+          setStatus(null);
+          setProducts([]);
+        } else {
+          setStatus(null);
+          setProducts([]);
+        }
+      } finally {
         setLoading(false);
-      })
-      .catch(() => setLoading(false));
+      }
+    };
+
+    fetchProduct();
   }, []);
 
   const uniqueCategories = [...new Set(products.map(item => item.category))];
@@ -135,7 +152,7 @@ const AcPage = () => {
                         alt={item.title}
                         className="max-w-full max-h-full object-contain rounded-xl transition-transform duration-300 hover:scale-105 bg-white"
                       />
-                </div>
+                    </div>
                   </Link>
                   <div className="p-3 text-center text-gray-900 font-semibold">
                     {item.title}

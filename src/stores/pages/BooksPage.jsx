@@ -16,15 +16,32 @@ const BooksPage = () => {
   const [sortType, setSortType] = useState('priceLowHigh');
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [status, setStatus] = useState(null);
 
   useEffect(() => {
-    setLoading(true);
-    axios.get('https://fakestoreapi.com/products')
-      .then((response) => {
-        setBooks(response.data);
+    const fetchBooks = async () => {
+      try {
+        setLoading(true);
+        const res = await axios.get('https://fakestoreapi.com/products');
+        setBooks(res.data);
+        setStatus(res.status);
+      } catch (error) {
+        if (error.response) {
+          setStatus(error.response.status);
+          setBooks([]);
+        } else if (error.request) {
+          setStatus(null);
+          setBooks([]);
+        } else {
+          setStatus(null);
+          setBooks([]);
+        }
+      } finally {
         setLoading(false);
-      })
-      .catch(() => setLoading(false));
+      }
+    };
+
+    fetchBooks();
   }, []);
 
   const uniqueBooks = [...new Set(books.map(item => item.category))];

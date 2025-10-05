@@ -16,15 +16,32 @@ const FridgePage = () => {
   const [sortType, setSortType] = useState('priceLowHigh');
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [status, setStatus] = useState(null);
 
   useEffect(() => {
-    setLoading(true);
-    axios.get('https://fakestoreapi.com/products') // Replace with fridges API if available
-      .then((response) => {
-        setFridges(response.data);
+    const fetchFridges = async () => {
+      try {
+        setLoading(true);
+        const res = await axios.get('https://fakestoreapi.com/products');
+        setFridges(res.data);
+        setStatus(res.status);
+      } catch (error) {
+        if (error.response) {
+          setStatus(error.response.status);
+          setFridges([]);
+        } else if (error.request) {
+          setStatus(null);
+          setFridges([]);
+        } else {
+          setStatus(null);
+          setFridges([]);
+        }
+      } finally {
         setLoading(false);
-      })
-      .catch(() => setLoading(false));
+      }
+    };
+
+    fetchFridges();
   }, []);
 
   const uniqueCompanies = [...new Set(fridges.map(item => item.category))];
